@@ -4,9 +4,10 @@ pragma solidity >=0.4.22;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
+// TO-DO: use IERC to save gas fee
+
 contract TokenA is ERC20 {
-    constructor(string memory name, string memory symbol) ERC20(name, symbol) {
-    // constructor(string memory name, string memory symbol) ERC20("Token A", "TKA") {
+    constructor() ERC20("Token A", "TKA") {
         // Mint 100 tokens to msg.sender
         _mint(msg.sender, 100);
     }

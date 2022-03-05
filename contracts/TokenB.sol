@@ -4,6 +4,8 @@ pragma solidity >=0.4.22;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
+// TO-DO: use IERC to save gas fee
+
 // Token B is a wrapped Token A
 contract TokenB is ERC20 {
     ERC20 underlying;
