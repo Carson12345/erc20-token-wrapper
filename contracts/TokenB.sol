@@ -16,7 +16,7 @@ contract TokenB is ERC20 {
 
     // Give an amount of Token B to sender
     // amount is in the unit of Token B
-    function requestWrappedToken(uint amount) external payable {
+    function requestWrappedToken(uint amount) external {
         underlying.transferFrom(msg.sender, address(this), amount * 2);
         _mint(msg.sender, amount);
     }
