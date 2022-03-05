@@ -1,0 +1,28 @@
+{
+  "name": "wraptoken",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.5.0",
+    "@truffle/hdwallet-provider": "^2.0.3",
+    "web3": "^1.7.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node app/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Carson12345/solidity-learning-wrapping-token.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Carson12345/solidity-learning-wrapping-token/issues"
+  },
+  "homepage": "https://github.com/Carson12345/solidity-learning-wrapping-token#readme"
+}
