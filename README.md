@@ -4,7 +4,7 @@ First time connecting what I learnt online and built a frontend + backend of a D
 
 ##### Smart Contract with Ethereum, Solidity, Truffle Suite
 
-##### GUI using NextJS, Web3.js, Tailwind CSS
+##### GUI using Next.js, Web3.js, Tailwind CSS
 
 https://token-wrapper.netlify.app/
 

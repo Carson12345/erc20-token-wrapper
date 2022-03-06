@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Link from 'next/link';
 
 export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = useState(false);
@@ -14,15 +15,17 @@ export default function Navbar(props) {
       >
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
-            <a
-              className={
+            <Link
+              href="/"
+            >
+              <span
+                className={
                 (props.transparent ? "text-white" : "text-gray-800") +
                 " text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"
-              }
-              href="https://www.creative-tim.com/learning-lab/tailwind-starter-kit#/presentation"
-            >
-              Token Wrapper
-            </a>
+              }>
+                Token Wrapper
+              </span>
+            </Link>
             <button
               className="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
               type="button"
@@ -45,16 +48,16 @@ export default function Navbar(props) {
           >
             <ul className="flex flex-col lg:flex-row list-none mr-auto">
               <li className="flex items-center">
-                <a
-                  className={
+                <Link
+                  href="/"
+                >
+                  <span className={
                     (props.transparent
                       ? "lg:text-white lg:hover:text-gray-300 text-gray-800"
                       : "text-gray-800 hover:text-gray-600") +
                     " px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
-                  }
-                  href="/"
-                >
-                  <i
+                  }>
+                    <i
                     className={
                       (props.transparent
                         ? "lg:text-gray-300 text-gray-500"
@@ -63,7 +66,8 @@ export default function Navbar(props) {
                     }
                   />{" "}
                   Docs
-                </a>
+                  </span>
+                </Link>
               </li>
             </ul>
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
