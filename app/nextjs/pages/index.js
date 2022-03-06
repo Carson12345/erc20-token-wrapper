@@ -179,7 +179,7 @@ const Main = () => {
                             <div className="px-6">
                                 <div className="flex flex-wrap justify-center">
                                     <div className="w-full lg:w-8/12 px-4 lg:order-3 lg:text-right lg:self-center">
-                                        <div className="py-6 px-3 mt-32 sm:mt-0 text-center">
+                                        <div className="py-6 px-3 mt-6 sm:mt-0 text-center">
                                             <button
                                                 className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none"
                                                 type="button"
@@ -199,7 +199,7 @@ const Main = () => {
                                   <h5 className='my-3 text-green-500 font-bold text-center'>Loading / Confirming Transaction ...</h5>
                                 )}
                                 <div className='flex border-t'>
-                                  <div className='w-6/12 border-r py-3'>
+                                  <div className='w-6/12 border-r p-3'>
                                       <h5 className='text-normal font-semibold text-center'>
                                         Balance of Token A
                                       </h5>
@@ -213,7 +213,7 @@ const Main = () => {
                                         {showNum(allowanceA)}
                                       </h5>
                                   </div>
-                                  <div className='w-6/12 py-3'>
+                                  <div className='w-6/12 p-3'>
                                       <h5 className='text-normal font-semibold text-center'>
                                         Balance of Token B
                                       </h5>
@@ -223,7 +223,7 @@ const Main = () => {
                                   </div>
                                 </div>
                                 <div className='flex border-t'>
-                                  <div className='w-6/12 py-3 border-r text-center'>
+                                  <div className='w-6/12 p-3 border-r text-center'>
                                       <button
                                           className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
                                           type="button"
@@ -238,7 +238,7 @@ const Main = () => {
                                           Wrap Token A to Token B
                                       </button>
                                   </div>
-                                  <div className='w-6/12 py-3 text-center'>
+                                  <div className='w-6/12 p-3 text-center'>
                                       <button
                                           className="bg-blue-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
                                           type="button"
