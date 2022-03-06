@@ -7,43 +7,117 @@ import { InitContract, TokenAContractData, TokenBContractData } from '../blockch
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useEffect, useState } from 'react';
 
+const showNum = (num) => {
+  return (num !== null) ? num : '-';
+};
+
 const Main = () => {
     const [message, setMessage] = useState('');
     const [error, setError] = useState('')
     const [web3, setWeb3] = useState(null);
+    const [loading, setLoading] = useState(false);
 
+    const [selectedAddress, setSelectedAddress] = useState(null);
+    const [allowanceA, setAllowanceA] = useState(null);
+    const [balanceA, setbalanceA] = useState(null);
+    const [balanceB, setbalanceB] = useState(null);
+    const [TokenAContractInstance, setTokenAContractInstance] = useState(null);
+    const [TokenBContractInstance, setTokenBContractInstance] = useState(null);
 
+    const wrapTokenAForTokenB = async (amountInTKB) => {
+      try {
+        setLoading(true);
+        if (!TokenAContractInstance || !TokenBContractInstance) {
+          window.alert("Please first connect Metamask");
+          return;
+        }
+        let bal = await TokenAContractInstance.methods.balanceOf(selectedAddress).call().then();
+        let allowance = await TokenAContractInstance.methods.allowance(selectedAddress, TokenBContractInstance.options.address).call().then();
+
+        if (allowance < (amountInTKB * 2)) {
+          // If run following will use your real / test ether, so commented first
+          await TokenAContractInstance.methods.approve(TokenBContractInstance.options.address, 20).send({
+              from: selectedAddress
+          });
+
+          allowance = await TokenAContractInstance.methods.allowance(selectedAddress, TokenBContractInstance.options.address).call().then();
+
+          setAllowanceA(parseInt(allowance));
+        }
+
+        await TokenBContractInstance.methods.requestWrappedToken(amountInTKB).send({
+            from: selectedAddress
+        });
+
+        bal = await TokenAContractInstance.methods.balanceOf(selectedAddress).call().then();
+
+        setbalanceA(parseInt(bal));
+      } catch (error) {
+        console.log(error);
+        window.alert("Error");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    const unwrapTokenB = async (amountInTKB) => {
+      try {
+        setLoading(true);
+        let balB = await TokenBContractInstance.methods.balanceOf(selectedAddress).call().then();
+
+        if (balB >= amountInTKB) {
+          await TokenBContractInstance.methods.unwrapTokenForUnderlying(amountInTKB).send({
+              from: selectedAddress
+          });
+
+          let balA = await TokenAContractInstance.methods.balanceOf(selectedAddress).call().then();
+          balB = await TokenBContractInstance.methods.balanceOf(selectedAddress).call().then();
+
+          setbalanceB(parseInt(balB));
+          setbalanceA(parseInt(balA));
+        }
+      } catch (error) {
+        console.log(error);
+        window.alert("Error");
+      } finally {
+        setLoading(false);
+      }
+    }
 
     const connectWalletHandler = async () => {
         if ((typeof window !== "undefined") && (typeof window.ethereum !== "undefined")) {
             try {
-                window.ethereum.request({
+                setLoading(true);
+                await window.ethereum.request({
                     method: "eth_requestAccounts"
-                })
-                let Web3Instance = new Web3(window.ethereum);
-                setWeb3(Web3Instance);
+                });
 
-                const TokenAContractInstance = InitContract(TokenAContractData, Web3Instance);
-                const TokenBContractInstance = InitContract(TokenBContractData, Web3Instance);
+                let Web3Instance = new Web3(window.ethereum);
+
+                let tkaInstance = InitContract(TokenAContractData, Web3Instance);
+                let tkbInstance = InitContract(TokenBContractData, Web3Instance);
 
                 const accounts = await Web3Instance.eth.getAccounts();
 
                 const address = accounts[0];
-                let bal = await TokenAContractInstance.methods.balanceOf(address).call().then();
 
-                // If run following will use your real / test ether, so commented first
-                await TokenAContractInstance.methods.approve(TokenBContractInstance.options.address, 20).send({
-                    from: address
-                });
+                let balA = await tkaInstance.methods.balanceOf(address).call().then();
+                let balB = await tkbInstance.methods.balanceOf(address).call().then();
+                let allowance = await tkaInstance.methods.allowance(address, tkbInstance.options.address).call().then();
+      
+                console.log(balA, balB, allowance);
+                setAllowanceA(parseInt(allowance));
+                setbalanceA(parseInt(balA));
+                setbalanceB(parseInt(balB));
 
-                const allowance = await TokenAContractInstance.methods.allowance(address, TokenBContractInstance.options.address).call().then();
-
-                console.log("Allowance of account 0: ", allowance);
-
-                setMessage(`Account: ${address}, TKA Balance: ${bal}, Alloance: ${allowance}`);
-
+                setTokenAContractInstance(tkaInstance);
+                setTokenBContractInstance(tkbInstance);
+                setSelectedAddress(address);
+                setWeb3(Web3Instance);
             } catch (err) {
                 console.log(err.message);
+            } finally {
+              setLoading(false);
             }
         } else {
             window.alert("Please install metamask");
@@ -51,11 +125,11 @@ const Main = () => {
     }
 
     useEffect(()=>{
-        const initContract = async () => {
+        const init = async () => {
 
         }
 
-        initContract();
+        init();
     })
 
 
@@ -66,7 +140,7 @@ const Main = () => {
             </Head>
             <Navbar transparent />
             <main className="profile-page">
-                <section className="relative block" style={{ height: "500px" }}>
+                <section className="relative block" style={{ height: "300px" }}>
                     <div
                         className="absolute top-0 w-full h-full bg-center bg-cover"
                         style={{
@@ -104,25 +178,81 @@ const Main = () => {
                         <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
                             <div className="px-6">
                                 <div className="flex flex-wrap justify-center">
-                                    <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
-                                        <div className="relative">
-                                        </div>
-                                    </div>
-                                    <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
-                                        <div className="py-6 px-3 mt-32 sm:mt-0">
+                                    <div className="w-full lg:w-8/12 px-4 lg:order-3 lg:text-right lg:self-center">
+                                        <div className="py-6 px-3 mt-32 sm:mt-0 text-center">
                                             <button
-                                                className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
+                                                className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none"
                                                 type="button"
                                                 style={{ transition: "all .15s ease" }}
                                                 onClick={() => {
                                                     connectWalletHandler();
                                                 }}
                                             >
-                                                Connect
+                                                Connect with Metamask & Refresh Balance
                                             </button>
                                         </div>
                                     </div>
                                     
+                                </div>
+                                <h5 className='text-center my-3 font-bold'>Balance And Allowance</h5>
+                                {loading && (
+                                  <h5 className='my-3 text-green-500 font-bold text-center'>Loading / Confirming Transaction ...</h5>
+                                )}
+                                <div className='flex border-t'>
+                                  <div className='w-6/12 border-r py-3'>
+                                      <h5 className='text-normal font-semibold text-center'>
+                                        Balance of Token A
+                                      </h5>
+                                      <h5 className='text-xl font-bold text-center'>
+                                        {showNum(balanceA)}
+                                      </h5>
+                                      <h5 className='text-normal font-semibold text-center'>
+                                        Allowance of Token A
+                                      </h5>
+                                      <h5 className='text-xl font-bold text-center'>
+                                        {showNum(allowanceA)}
+                                      </h5>
+                                  </div>
+                                  <div className='w-6/12 py-3'>
+                                      <h5 className='text-normal font-semibold text-center'>
+                                        Balance of Token B
+                                      </h5>
+                                      <h5 className='text-xl font-bold text-center'>
+                                        {showNum(balanceB)}
+                                      </h5>
+                                  </div>
+                                </div>
+                                <div className='flex border-t'>
+                                  <div className='w-6/12 py-3 border-r text-center'>
+                                      <button
+                                          className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
+                                          type="button"
+                                          style={{ transition: "all .15s ease" }}
+                                          onClick={() => {
+                                              let amountInTKB = window.prompt("How many Token B (TKB) you want to wrap?");
+                                              if (amountInTKB) {
+                                                wrapTokenAForTokenB(amountInTKB);
+                                              }
+                                          }}
+                                      >
+                                          Wrap Token A to Token B
+                                      </button>
+                                  </div>
+                                  <div className='w-6/12 py-3 text-center'>
+                                      <button
+                                          className="bg-blue-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1"
+                                          type="button"
+                                          style={{ transition: "all .15s ease" }}
+                                          onClick={() => {
+                                            let amountInTKB = window.prompt("How many Token B (TKB) you want to unwrap?");
+                                            if (amountInTKB) {
+                                              unwrapTokenB(amountInTKB);
+                                            }
+                                          }}
+                                      >
+                                          Unwrap Token B to Token A
+                                      </button>
+                                  </div>
                                 </div>
                                 <div className="text-center mt-12">
                                     <h3 className="text-4xl font-semibold leading-normal mb-2 text-gray-800 mb-2">
