@@ -34,6 +34,13 @@ contract("TokenB", (accounts) => {
     it("After unwrapping 10 Token B, should have 100 Token A left and 0 Token B left", async () => {
         const tkaInstance = await TokenA.deployed();
         const tkbInstance = await TokenB.deployed();
+
+        // wondering if approval is needed or not for burning too
+        // await tkbInstance.approve(tkbInstance.address, 10, { from: accounts[0] });
+        // const allowance = await tkbInstance.allowance(accounts[0], tkbInstance.address);
+
+        // console.log("Allowance of account 0: ", allowance.toNumber());
+
         await tkbInstance.unwrapTokenForUnderlying(10, {
             from: accounts[0]
         });

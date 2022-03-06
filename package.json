@@ -11,7 +11,9 @@
     "@truffle/hdwallet-provider": "^2.0.3",
     "web3": "^1.7.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "hardhat": "^2.9.1"
+  },
   "scripts": {
     "test": "node app/index.js"
   },

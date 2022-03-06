@@ -4,8 +4,6 @@ pragma solidity >=0.4.22;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-// TO-DO: use IERC to save gas fee
-
 contract TokenA is ERC20 {
     constructor() ERC20("Token A", "TKA") {
         // Mint 100 tokens to msg.sender
