@@ -50,8 +50,10 @@ const Main = () => {
         });
 
         bal = await TokenAContractInstance.methods.balanceOf(selectedAddress).call().then();
+        let balB = await TokenBContractInstance.methods.balanceOf(selectedAddress).call().then();
 
         setbalanceA(parseInt(bal));
+        setbalanceB(parseInt(balB));
       } catch (error) {
         console.log(error);
         window.alert("Error");
