@@ -68,8 +68,7 @@ const Main = () => {
       try {
         setLoading(true);
         let balB = await TokenBContractInstance.methods.balanceOf(selectedAddress).call().then();
-
-        if (balB >= amountInTKB) {
+        if (parseInt(balB) >= amountInTKB) {
           await TokenBContractInstance.methods.unwrapTokenForUnderlying(amountInTKB).send({
               from: selectedAddress
           });
