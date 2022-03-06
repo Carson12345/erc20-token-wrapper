@@ -36,7 +36,7 @@ const Main = () => {
 
         if (allowance < (amountInTKB * 2)) {
           // If run following will use your real / test ether, so commented first
-          await TokenAContractInstance.methods.approve(TokenBContractInstance.options.address, 20).send({
+          await TokenAContractInstance.methods.approve(TokenBContractInstance.options.address, amountInTKB * 2).send({
               from: selectedAddress
           });
 
