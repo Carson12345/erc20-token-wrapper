@@ -8,6 +8,8 @@ First time connecting what I learnt online and built a frontend + backend of a D
 
 https://token-wrapper.netlify.app/
 
+Try playaround with Rinkeby Testnet (Faucet: https://faucet.rinkeby.io/)
+
 <img width="1440" alt="Screenshot 2022-03-06 at 7 43 07 PM" src="https://user-images.githubusercontent.com/22004238/156921517-39c1af4b-6d4e-444e-a316-0457f3ee6484.png">
 
 
