@@ -1,6 +1,6 @@
 ## solidity-learning-wrapping-token
 
-First time doing connecting what I learnt online and built a frontend + backend of a DAPP demo~
+First time connecting what I learnt online and built a frontend + backend of a DAPP demo~
 
 ##### Smart Contract with Ethereum, Solidity, Truffle Suite
 
