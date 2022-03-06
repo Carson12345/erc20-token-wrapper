@@ -8,7 +8,7 @@ import { InitContract, TokenAContractData, TokenBContractData } from '../../bloc
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useEffect, useState } from 'react';
 
-const main = () => {
+const Main = () => {
     const [message, setMessage] = useState('');
     const [error, setError] = useState('')
     const [web3, setWeb3] = useState(null);
@@ -146,4 +146,4 @@ const main = () => {
 }
 
 
-export default main
+export default Main
